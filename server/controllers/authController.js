@@ -2,6 +2,7 @@ import bycrpt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
+import transporter from '../config/nodemailer.js';
 
 export const register=async(req,res)=>{
 
@@ -32,6 +33,29 @@ export const register=async(req,res)=>{
       'none':'strict',
       maxAge:7*24*60*60*1000
     });
+
+    //Sending welcome email
+    const mailOptions={
+      from:process.env.SENDER_EMAIL,
+      to:email,
+      subject:"Welcome to AuthNest",
+      text:`🎉 Welcome to AuthNest!
+
+Hi ${name},
+
+Welcome aboard! 🎊 Your account has been successfully registered.
+
+You can now log in anytime to explore your dashboard, manage your profile, and enjoy all the features we’ve built for you.
+
+If you ever need help, feel free to reach out to us at jkim70520@email.com.
+
+We’re excited to have you with us! 🚀
+
+Best regards,
+The AuthNest Team`
+    }
+
+    await transporter.sendMail(mailOptions);
 
     return res.json({success:true});
     
