@@ -1,12 +1,22 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  return (
-    <div className="w-full flex justify-between items-center ">
-      <img src={assets.logo} alt="logo" className="w-28 sm:w-32" />
+  const navigate = useNavigate();
 
-      <button className="mr-10 flex items-center gap-2 border border-gray-500 rounded-full px-6 py-2 text-gray-800 hover:bg-gray-100 transition-all">
+  return (
+    <div className="navbar">
+      <img src={assets.logo} alt="logo" className="navbar-logo" />
+
+      <button
+        onClick={() => {
+          console.log("Login clicked");
+          navigate("/login");
+        }}
+        className="navbar-btn"
+      >
         Login <img src={assets.arrow_icon} alt="arrow" />
       </button>
     </div>

@@ -1,0 +1,51 @@
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-img {
+  width: 144px;   /* same as Tailwind's w-36 */
+  height: 144px;
+  border-radius: 50%;
+  margin-bottom: 1.5rem; /* same as mb-6 */
+}
+
+.header-title {
+  font-size: 1.3rem;  /* same as text-2xl */
+  font-weight:500;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.wave-icon {
+  width: 32px;  /* same as w-8 */
+  height: 32px;
+}
+.head-button{
+  margin-right: 35px;
+  border: 1px solid black;
+  border-radius: 10px;
+  color: #1f2937;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+}
+.head-button:hover{
+  background-color: #d1d5db;
+  border-color: #d1d5db;
+  color: black;
+}
+.head-button:active{
+background-color: #9ca3af;
+border-color: #9ca3af;
+color: white;
+}
+
+.header-msg{
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
