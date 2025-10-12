@@ -2,26 +2,27 @@ import userModel from "../models/userModel.js";
 
 export const getUserData = async (req, res) => {
   try {
-    const { userId } = req.query;   // ✅ use query instead of body
+    const userId = req.user.id; // ✅ get from middleware
 
     if (!userId) {
-      return res.json({ success: false, message: "userId is required in query" });
+      return res.json({ success: false, message: "User ID not found in token" });
     }
 
     const user = await userModel.findById(userId);
 
     if (!user) {
-      return res.json({ success: false, message: "User not found!!" });
+      return res.json({ success: false, message: "User not found!" });
     }
 
     res.json({
       success: true,
       userData: {
         name: user.name,
+        email: user.email,
         isAccountVerified: user.isAccountVerified,
       },
     });
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
