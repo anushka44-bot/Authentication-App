@@ -4,14 +4,13 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  z-index: 1000; 
+  z-index: 1000;
   padding: 0.75rem 2rem;
   box-sizing: border-box;
 }
 
-
 .navbar-logo {
-  width: 7rem; 
+  width: 7rem;
 }
 
 @media (min-width: 640px) {
@@ -23,17 +22,21 @@
 .navbar-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;           
-  border: 1px solid #6b7280; 
+  gap: 0.5rem;
+  border: 1px solid #6b7280;
   border-radius: 9999px;
   padding: 0.5rem 1.5rem;
-  color: #1f2937;  
+  color: #1f2937;
   background-color: transparent;
   transition: all 0.3s ease;
 }
 
 .navbar-btn:hover {
   background-color: #f3f4f6;
+}
+
+.navbar-user-container {
+  position: relative;
 }
 
 .navbar-user {
@@ -45,5 +48,38 @@
   border-radius: 9999px;
   background-color: #000;
   color: #fff;
-  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navbar-dropdown {
+  position: absolute;
+  top: 2.5rem;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.navbar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.navbar-list-item {
+  padding: 0.4rem 0.75rem;
+  color: #111827;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-list-item:hover {
+  background-color: #e5e7eb;
 }
