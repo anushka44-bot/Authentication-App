@@ -13,6 +13,23 @@ function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
+  const sendVerificationOtp = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.post(
+        backendUrl + "/api/auth/send-verify-otp"
+      );
+      if (data.success) {
+        navigate("/email-verify");
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const logout = async () => {
     try {
       axios.defaults.withCredentials = true;
@@ -52,7 +69,12 @@ function Navbar() {
             <div className="navbar-dropdown">
               <ul className="navbar-list">
                 {!userData.isAccountVerified && (
-                  <li className="navbar-list-item">Verify email</li>
+                  <li
+                    onClick={sendVerificationOtp}
+                    className="navbar-list-item"
+                  >
+                    Verify email
+                  </li>
                 )}
 
                 <li className="navbar-list-item" onClick={logout}>
