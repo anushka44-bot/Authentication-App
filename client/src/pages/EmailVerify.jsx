@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { assets } from "../assets/assets";
 import "./EmailVerify.css";
 import { useNavigate } from "react-router-dom";
+import { AppContent } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function EmailVerify() {
+  axios.defaults.withCredentials = true;
+  const { backendUrl, isLoggedin, userData, getUserData } =
+    useContext(AppContent);
   const inputRefs = React.useRef([]);
 
   const handleInput = (e, index) => {
@@ -24,6 +30,42 @@ function EmailVerify() {
     }
   };
 
+  const handlePaste = (e) => {
+    const paste = e.clipboardData.getData("text");
+    const pasteArray = paste.split("");
+    pasteArray.forEach((char, index) => {
+      if (inputRefs.current[index]) {
+        inputRefs.current[index].value = char;
+      }
+    });
+  };
+
+  const onSubmitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      const otpArray = inputRefs.current.map((e) => e.value);
+      const otp = otpArray.join("");
+      const { data } = await axios.post(
+        backendUrl + "/api/auth/verify-account",
+        { otp }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        getUserData();
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    isLoggedin && userData && userData.isAccountVerified && navigate("/");
+  }, [isLoggedin, userData]);
+
   const navigate = useNavigate();
 
   return (
@@ -35,12 +77,12 @@ function EmailVerify() {
         className="email-verify-logo"
       />
 
-      <form className="email-verify-form">
+      <form className="email-verify-form" onSubmit={onSubmitHandler}>
         <h1 className="email-verify-title">Email Verify OTP</h1>
         <p className="email-verify-text">
           Enter the 6-digit code sent to your email id.
         </p>
-        <div className="email-verify-inputs">
+        <div className="email-verify-inputs" onPaste={handlePaste}>
           {Array(6)
             .fill(0)
             .map((_, index) => (
