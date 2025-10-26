@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useEffect } from "react";
 import { assets } from "../assets/assets";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,14 @@ import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const showLogin = localStorage.getItem("showLogin");
+    if (showLogin === "true") {
+      setState("Login");
+      localStorage.removeItem("showLogin");
+    }
+  }, []);
+
   const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent);
 
   const [state, setState] = useState("Sign Up");
@@ -17,8 +26,8 @@ function Login() {
   const [password, setPassword] = useState(" ");
 
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       axios.defaults.withCredentials = true;
 
       if (state === "Sign Up") {
@@ -35,8 +44,8 @@ function Login() {
         } else {
           toast.error(data.message);
         }
-        e;
       } else {
+        // Login
         const { data } = await axios.post(backendUrl + "/api/auth/login", {
           email,
           password,
@@ -47,11 +56,15 @@ function Login() {
           getUserData();
           navigate("/");
         } else {
-          toast.error(error.message);
+          // Show backend message, e.g., "Invalid Password"
+          toast.error(data.message || "Invalid Password");
         }
       }
     } catch (error) {
-      toast.error(data.message);
+      // Show backend error if available
+      toast.error(
+        error.response?.data?.message || error.message || "Login failed"
+      );
     }
   };
 
